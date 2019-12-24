@@ -3,11 +3,11 @@
 /* Class population represents a set of candidate solutions */
 class population {
 public:
-	// class attributes
+// class attributes
 	vector <individual> members;
 	individual* fittest;
 
-	// parametrized constructor: takes in parameter of population size
+// parametrized constructor: takes in parameter of population size
 	population(int popsize)
 	{
 		for (int i = 0; i < popsize; i++) {		// generate popsize new random individuals

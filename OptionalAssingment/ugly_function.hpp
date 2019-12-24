@@ -1,14 +1,14 @@
 #pragma once
 
 int s(double x, double y, double z, double t) {
-	double a = (x + y) / (2147483648UL + y + z) + 0.86525597943226508722;
+	double a = (x + y) / (2147483648.f + y + z) + 0.86525597943226508722;
 	double result;
 	modf(a, &result);
 	return (int)result;
 }
 
 double phi(double x, double y, double z, double t, double a, double b, double c, double d) {
-	double result = 8796093022208ULL - pow(x - a, 2) - pow(y - b, 2) - pow(z - c, 2) - pow(t - d, 2);
+	double result = 8796093022208.f - pow(x - a, 2) - pow(y - b, 2) - pow(z - c, 2) - pow(t - d, 2);
 	return result;
 }
 

@@ -33,26 +33,16 @@ public:
 	void mutate() {
 		// rewrite this with for auto on a vector of pointers to the chromosomes
 		for (int i = 0; i < 4; i++) {
-			double chance = unif(rndgen);
-			if (chance < p_mut) {									// if an individual is allowed to mutate in that chromosome
-				int num_mut = (int)expgen(rndgen);  				// compute how many mutations should be introduced
-				if (num_mut == 0) num_mut = 1;						// always at least one mutation
-				unsigned long* chr = NULL;							// pointer to the chromosome to be mutated
-				switch (i) {
-                    case 0: chr = &x; break;
-                    case 1: chr = &y; break;
-                    case 2: chr = &z; break;
-                    case 3: chr = &t; break;
-				}
-				int j = 0;
-				unsigned char pos;									// position that will be mutated
-				while (j < num_mut) {
-					pos = (unsigned char)(N * unif(rndgen));		// random position to introduce mutation
-					*chr = (*chr)^(1U << pos);
-					j++;
-				}
-			}
-		}
+            unsigned long* chr = NULL;							// pointer to the chromosome to be mutated
+            switch (i) {
+                case 0: chr = &x; break;
+                case 1: chr = &y; break;
+                case 2: chr = &z; break;
+                case 3: chr = &t; break;
+            }
+            unsigned char j;									// position that will be mutated
+            for (j = 0; j < N; j++) if (unif(rndgen) < p_mut) *chr = (*chr)^(1U << j); 
+        }
 		find_fitness();
 	}
 
