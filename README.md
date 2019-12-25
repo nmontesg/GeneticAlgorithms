@@ -1,4 +1,4 @@
-# GeneticAlgorithms
+# Genetic Algorithms
 
 This repository includes implementations of Genetic Algorithms for the following projects:
 
