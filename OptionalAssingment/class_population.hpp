@@ -1,17 +1,17 @@
 #pragma once
 
 /* Class population represents a set of candidate solutions */
-class population {
+class Population {
 public:
 // class attributes
-	vector <individual> members;
-	individual* fittest;
+	vector <Individual> members;
+	Individual* fittest;
 
 // parametrized constructor: takes in parameter of population size
 	population(int popsize)
 	{
 		for (int i = 0; i < popsize; i++) {		// generate popsize new random individuals
-			individual new_ind;
+			Individual new_ind;
 			new_ind.random_individual();
 			members.push_back(new_ind);
 		}
@@ -20,8 +20,8 @@ public:
 
 // member functions
 	// find the fittest individual
-	individual* find_fittest() {
-		individual* fittest = &members[0];
+	Individual* find_fittest() {
+		Individual* fittest = &members[0];
 		double max_fitness = fittest->fitness;
 		for (int i = 0; i < popsize; i++) {
 			if (members[i].fitness > max_fitness) {
@@ -33,7 +33,7 @@ public:
 	}
 
 	// select with replacement through a 1 vs 1 tournament
-	individual* tournament() {
+	Individual* tournament() {
 		int contestant1 = (int)(popsize * unif(rndgen));	// select two different contestants randomly
 		int contestant2 = (int)(popsize * unif(rndgen));
 		while (contestant2 == contestant1) contestant2 = (int)(popsize * unif(rndgen));
@@ -43,12 +43,12 @@ public:
 
 	// create a new generation and subtitute the old one
 	void new_generation() {
-		vector<individual> Q;
+		vector<Individual> Q;
 		for (int i = 0; i < popsize / 2; i++) {
-			individual* parent1 = tournament();
-			individual* parent2 = tournament();
+			Individual* parent1 = tournament();
+			Individual* parent2 = tournament();
 			while (parent2 == parent1) parent2 = tournament();
-			vector <individual> offspring = one_point_crossover(parent1, parent2);
+			vector <Individual> offspring = one_point_crossover(parent1, parent2);
 			Q.insert(Q.end(), offspring.begin(), offspring.end());
 		}
 		members = Q;

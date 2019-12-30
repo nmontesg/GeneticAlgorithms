@@ -1,4 +1,3 @@
-/* All necessary includes */
 #include <iostream>
 #include <vector>
 #include <random>
@@ -26,9 +25,9 @@ uniform_real_distribution<double> unif(0.f, 1.0f);
 int main(int argc, char* argv[]) {
     
 // current generation
-	population candidates(popsize);
+	Population candidates(popsize);
 // fittest individual so far
-	individual* solution = new individual;
+	Individual* solution = new Individual;
     *solution = *(candidates.fittest);
 	int the_iter = 0;
 // maximum number of iterations that are allowed without updating the fittest individual

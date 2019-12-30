@@ -1,7 +1,7 @@
 #pragma once
 
 /* Class individual represents a candidate solution */
-class individual {
+class Individual {
 public:
 // data attributes
 	// phenotype: 4 variables
