@@ -1,3 +1,5 @@
+#include <float.h>
+
 /* Tumour Parameters */
 #define lambda_par 0.336
 #define lambdalogTheta_par 9.284023094951992774680543277273261947643
@@ -90,7 +92,7 @@ double Paliative_Fitness(unsigned char *Cij) {
   for(i=0; i < npar; i++){
     double tfin = t_i[i+1]; // Implementing treatment i
     GompertzParams.drift_i = 0.0;
-    for(j=0; j < d_par; j++) GompertzParams.drift_i += k_j[j] * *(Cij++);
+    for(j=0; j < d_par; j++) GompertzParams.drift_i += k_j[j] * (*(Cij++)>>4);
     
     while(t+h < tfin) {
       RKF78(&t, &N, &h, hmin, hmax, tol, &GompertzParams, Gompertz);
