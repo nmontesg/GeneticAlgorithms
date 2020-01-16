@@ -117,6 +117,7 @@ double Paliative_Fitness(unsigned char *Cij) {
   
   if(!TestIfConstraints2and3AreVerifiedPaliative(Cij)) return DBL_MAX;
   
+// computation while treatment is on-going
   for(i=0; i < npar; i++){
     double tfin = t_i[i+1]; // Implementing treatment i
     GompertzParams.drift_i = 0.0;
@@ -131,6 +132,12 @@ double Paliative_Fitness(unsigned char *Cij) {
       RKF78(&t, &N, &h, hmin, hmax, tol, &GompertzParams, Gompertz);
       if(N > NMax_par) return 1.0/t;
     } while (t < tfin);
+  }
+// computation after treatment is finished.
+  h = 1.e-3;
+  GompertzParams.drift_i = 0.;
+  while(N <= NMax_par) {
+    RKF78(&t, &N, &h, hmin, hmax, tol, &GompertzParams, Gompertz);
   }
   return 1.0/t;
 }
@@ -207,7 +214,14 @@ void writeResult(unsigned char* Cij) {
       fprintf(out, "%.5f;%.5f\n", t, N);
       if(N > NMax_par) { fclose(out); return; }
     } while (t < tfin);
-    if(N < 1000) { fclose(out); break; }
+    if(N < 1000) { fclose(out); return; }
+  }
+// after treatment is finished.
+  h = 1.e-3;
+  GompertzParams.drift_i = 0.;
+  while(N < NMax_par) {
+    RKF78(&t, &N, &h, hmin, hmax, tol, &GompertzParams, Gompertz);
+    fprintf(out, "%.9f;%.0f\n", t, N);
   }
   fclose(out);
 }
