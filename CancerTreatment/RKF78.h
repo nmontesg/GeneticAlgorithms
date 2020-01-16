@@ -1,5 +1,12 @@
+/* Runge-Kutta-Fehlberg 78 with adaptive stepsize version 1.1
+ * implemented by Lluis Alseda on Jan 15, 2020
+ * This version corrects the error:
+ *     bij += 2; // bij = &b_{i+1,1} and (bij += 2) = &b_{i+1,3}
+ * to
+ *     bij += 3; // bij = &b_{i+1,1} and (bij += 3) = &b_{i+1,4} */
 #include <stdio.h>
 #include <stdlib.h>
+#define MIN(x,y) ((x) < (y) ? (x) : (y))
 
 double RKF78(double *, double *,
              double *, double, double,

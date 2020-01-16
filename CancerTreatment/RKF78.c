@@ -1,3 +1,9 @@
+/* Runge-Kutta-Fehlberg 78 with adaptive stepsize version 1.1
+ * implemented by Lluis Alseda on Jan 15, 2020
+ * This version corrects the error:
+ *     bij += 2; // bij = &b_{i+1,1} and (bij += 2) = &b_{i+1,3}
+ * to
+ *     bij += 3; // bij = &b_{i+1,1} and (bij += 3) = &b_{i+1,4} */
 #include "RKF78.h"
 #include <math.h>
 
@@ -9,8 +15,8 @@
  * norm is obtained. This norm is divided by n (the number of equations).
  * The number obtained in this way is required to be less than a given
  * tolerance tol times (1+0.01*nor), where nor is the L^1 norm of the
- * point computed to order 8?????. If this requirement is satisfied,
- * the order 8???? estimate is taken as the next point.
+ * point computed to order 8. If this requirement is satisfied,
+ * the order 8 estimate is taken as the next point.
  * Otherwise, a suitable value of the step h is obtained, and the
  * computation is started again.
  * In any case, when the next point is computed, a prediction of
@@ -105,7 +111,6 @@
  *   * a matrix of dimension s x n to store the intermediate vectors k_i
 */
 
-#define MIN(x,y) ((x) < (y) ? (x) : (y))
 void RKF782tfin(double *t, double *x, double tfin, void *ParmsStruct,
               void (*ODE)(double, double, double *, void *))
 {  double h;
@@ -278,7 +283,7 @@ double RKF78(double *t, double *x,
 /* Computation of h * k_i; i >= 5. Normal cases: b_{i+1,2} = b_{i+1,3} = 0 */
 		 bij=&beta[10];
 		 for(i=5; i < 13; i++){
-			 x7pred = *x + *bij * veck[0]; bij += 2; // bij = &b_{i+1,1} and (bij += 2) = &b_{i+1,3}
+			 x7pred = *x + *bij * veck[0]; bij += 3; // bij = &b_{i+1,1} and (bij += 3) = &b_{i+1,4}
 			 for(j=3; j < i; j++) x7pred += *(bij++) * veck[j];
 			 ODE(*t + alpha[i]* *h, x7pred, veck+i, ParmsStruct); veck[i] *= *h;
 		 }
@@ -386,7 +391,7 @@ double RKF78Sys(double *t, double x[],
 		 bij=&beta[10];
 		 for(i=5; i < 13; i++){
 		 	 VectorSetToVectorPlusCntntTimesVector_double(x7pred, n, x, *bij, matki); // x7pred = x + *bij * (h*k_0); bij = &b_{i+1,1}
-		 	 bij += 2; // bij = &b_{i+1,3}
+		 	 bij += 3; // bij = &b_{i+1,4}
 			 for(j=3, kj=matki+n3; j < i; j++, kj+=n) VectorAddCntntTimesVector_double(x7pred, n, *(bij++), kj); // x7pred += *(bij++) * (h*k_j)
 			 ODE_Sys(*t + alpha[i]* *h, x7pred, n, kj, ParmsStruct); // k_i -> &matki[i][0] = matki+i*n = kj
 			 VectorMultiplyByCntnt_double(kj, n, *h); // k_i -> h * k_i

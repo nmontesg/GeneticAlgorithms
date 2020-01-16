@@ -10,6 +10,7 @@
 #define d_par 10
 #define n_par 11
 
+
 static float k_j[d_par] = {0.12, 0.0502, 0.0637, 0.1347, 0.0902, 0.0546, 0.0767, 0.1121, 0.0971, 0.0403};
 static float t_i[n_par] = {0.0, 3.0, 6.0, 9.0, 12.0, 15.0, 18.0, 21.0, 24.0, 27.0, 33.0};
 static float eta_kj_cur[m_par][d_par] = {
