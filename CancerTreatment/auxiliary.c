@@ -149,9 +149,7 @@ void setExcessDosagesToZero(unsigned char* Cij) {
   double N = NZero_par, t = t_i[0];
   double hmin = 1.e-8, hmax = 1.0, h = 1.e-3, tol = 1.e-8;
   unsigned char curativecounter = 0U, npar = n_par - 1;
-  
-  if(!TestIfConstraints2and3AreVerifiedCurative(Cij)) return;
-  
+    
   for(i=0; i < npar; i++){
     double tfin = t_i[i+1]; // Implementing treatment i
     GompertzParams.drift_i = 0.0;
